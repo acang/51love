@@ -227,7 +227,7 @@ function hrefclicektest(){
   </div>
   <div style="clear:both"></div>
 </div>
-<%@ include file="bottom.jsp"%>
+<%@ include file="../bottom.jsp"%>
 </body>
 
 <script>

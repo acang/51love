@@ -373,7 +373,7 @@
 
     <div style="clear:both"></div>
 
-    <%@ include file="bottom.jsp"%>
+    <%@ include file="../bottom.jsp"%>
 </body>
 
 <form id="pageform" name="pageform"  method="Post" action="disp_bbs.jsp" target="_self">
