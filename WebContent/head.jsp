@@ -19,6 +19,11 @@
 <%@ page import="com.web.bean.QueryResult" %>
 <%@ page import="org.apache.commons.beanutils.DynaBean" %>
 
+
+<%@ page import="com.lover.mng.HYRegMng" %>
+<%@ page import="sun.misc.BASE64Decoder" %>
+
+
 <style>
     html,body{ height:100%; margin:0; padding:0}
 .mask{height:100%; width:100%; position:fixed; _position:absolute; top:0; z-index:99; }
@@ -48,8 +53,47 @@
 
 
     <%
+    	
+    
          //判断用户类型
-        Userinfo grwhqUser = (Userinfo)session.getAttribute(SysDefine.SESSION_LOGINNAME);
+        Userinfo grwhqUser = (Userinfo)session.getAttribute(SysDefine.SESSION_LOGINNAME);//增加读取cookie信息，登录生成session
+    	
+    	if(grwhqUser == null)
+    	{
+    		
+    		Cookie[] cookies = request.getCookies();
+    		
+    		for(int i = 0; i < cookies.length; i++)
+    		{
+    			//判断cookie对象是否是存用户信息的
+    			if("51up".equals(cookies[i].getName()))
+    			{
+    				//解码用户名密码
+    				BASE64Decoder de = new BASE64Decoder();
+        			byte[] by = de.decodeBuffer(cookies[i].getValue());
+        			String userAndPass = new String(by,"GBK");
+        			
+        			//分割，获取用户名密码
+        			//System.out.println("===============4" + userAndPass);
+        			
+        			String usernameFromCookie = userAndPass.split("#####")[0];
+        			String passwordFromCookie = userAndPass.split("#####")[1];
+        			
+        			//登录并生成session 
+        			String resultForLogin = HYRegMng.userLogin(usernameFromCookie,passwordFromCookie,request);
+        			//System.out.println("===============resultForLogin:" + resultForLogin);
+        			break;
+    			}
+    		}
+    		
+    	}
+         
+         
+		
+         
+         
+         
+         
         int flag = 0;
         if(grwhqUser != null && grwhqUser.getFlag() != null && grwhqUser.getFlag().intValue() == SysDefine.SYSTEM_HY_TYPE_vip)
             flag = SysDefine.SYSTEM_HY_TYPE_vip;
